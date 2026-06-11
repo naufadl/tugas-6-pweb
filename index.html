@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Pemrograman Web</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f9;
+        }
+
+        .container{
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card{
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1{
+            text-align:center;
+        }
+
+        h2{
+            color:#1e88e5;
+        }
+
+        label{
+            display:block;
+            margin-top:10px;
+            font-weight:bold;
+        }
+
+        input, select{
+            width:100%;
+            padding:10px;
+            margin-top:5px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            margin-top:15px;
+            padding:10px 20px;
+            background:#1e88e5;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1565c0;
+        }
+
+        .hasil{
+            margin-top:15px;
+            padding:10px;
+            background:#eef6ff;
+            border-left:5px solid #1e88e5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Tugas Pemrograman Web</h1>
+
+    <!-- NOMOR 1 -->
+    <div class="card">
+        <h2>1. Form Registrasi Mahasiswa</h2>
+
+        <form>
+            <label>Nama Mahasiswa</label>
+            <input type="text" list="namaMahasiswa" placeholder="Ketik nama mahasiswa">
+
+            <datalist id="namaMahasiswa">
+                <option value="Andi Saputra">
+                <option value="Budi Santoso">
+                <option value="Citra Lestari">
+                <option value="Dewi Anggraini">
+                <option value="Eko Prasetyo">
+                <option value="Fajar Baskoro">
+                <option value="Izzah Naufalia">
+                <option value="Muhammad Fathur Aziz">
+            </datalist>
+
+            <label>NIM</label>
+            <input type="text" placeholder="Masukkan NIM">
+
+            <label>Mata Kuliah</label>
+            <input type="text" placeholder="Masukkan Mata Kuliah">
+
+            <label>Dosen</label>
+            <input type="text" placeholder="Masukkan Nama Dosen">
+
+            <button type="submit">Daftar</button>
+        </form>
+    </div>
+
+    <!-- NOMOR 2 -->
+    <div class="card">
+        <h2>2. Pencarian Kode Pos Indonesia</h2>
+
+        <label>Provinsi</label>
+        <select id="provinsiCari">
+            <option value="">Pilih Provinsi</option>
+            <option value="Jawa Timur">Jawa Timur</option>
+            <option value="DKI Jakarta">DKI Jakarta</option>
+        </select>
+
+        <label>Kabupaten/Kota</label>
+        <select id="kotaCari">
+            <option value="">Pilih Kota</option>
+        </select>
+
+        <label>Kecamatan</label>
+        <select id="kecamatanCari">
+            <option value="">Pilih Kecamatan</option>
+        </select>
+
+        <button onclick="cariKodePos()">Cari Kode Pos</button>
+
+        <div class="hasil" id="hasilKodePos">
+            Hasil pencarian akan muncul di sini.
+        </div>
+    </div>
+
+    <!-- NOMOR 4 -->
+    <div class="card">
+        <h2>4. List Dropdown Dinamis</h2>
+
+        <label>Provinsi</label>
+        <select id="provinsi">
+            <option value="">Pilih Provinsi</option>
+        </select>
+
+        <label>Kota/Kabupaten</label>
+        <select id="kota">
+            <option value="">Pilih Kota</option>
+        </select>
+
+        <label>Kecamatan</label>
+        <select id="kecamatan">
+            <option value="">Pilih Kecamatan</option>
+        </select>
+    </div>
+
+</div>
+
+<script>
+
+    // DATA DAERAH
+
+    const wilayah = {
+        "Jawa Timur": {
+            "Surabaya": {
+                "Sukolilo": "60111",
+                "Rungkut": "60293",
+                "Wonokromo": "60243"
+            },
+            "Sidoarjo": {
+                "Buduran": "61252",
+                "Candi": "61271",
+                "Waru": "61256"
+            }
+        },
+
+        "DKI Jakarta": {
+            "Jakarta Selatan": {
+                "Kebayoran Baru": "12110",
+                "Pasar Minggu": "12520"
+            },
+            "Jakarta Timur": {
+                "Cakung": "13910",
+                "Duren Sawit": "13440"
+            }
+        }
+    };
+
+    // NOMOR 2 - PENCARIAN KODE POS
+
+    const provinsiCari = document.getElementById("provinsiCari");
+    const kotaCari = document.getElementById("kotaCari");
+    const kecamatanCari = document.getElementById("kecamatanCari");
+
+    provinsiCari.addEventListener("change", function() {
+
+        kotaCari.innerHTML =
+            '<option value="">Pilih Kota</option>';
+
+        kecamatanCari.innerHTML =
+            '<option value="">Pilih Kecamatan</option>';
+
+        let kotaData = wilayah[this.value];
+
+        for(let kota in kotaData){
+            kotaCari.innerHTML +=
+            `<option value="${kota}">${kota}</option>`;
+        }
+    });
+
+    kotaCari.addEventListener("change", function() {
+
+        kecamatanCari.innerHTML =
+            '<option value="">Pilih Kecamatan</option>';
+
+        let kecamatanData =
+        wilayah[provinsiCari.value][this.value];
+
+        for(let kecamatan in kecamatanData){
+            kecamatanCari.innerHTML +=
+            `<option value="${kecamatan}">
+                ${kecamatan}
+            </option>`;
+        }
+    });
+
+    function cariKodePos(){
+
+        let prov = provinsiCari.value;
+        let kota = kotaCari.value;
+        let kec = kecamatanCari.value;
+
+        if(!prov || !kota || !kec){
+            alert("Lengkapi data terlebih dahulu!");
+            return;
+        }
+
+        let kodePos = wilayah[prov][kota][kec];
+
+        document.getElementById("hasilKodePos").innerHTML = `
+            <b>Provinsi :</b> ${prov}<br>
+            <b>Kota :</b> ${kota}<br>
+            <b>Kecamatan :</b> ${kec}<br>
+            <b>Kode Pos :</b> ${kodePos}
+        `;
+    }
+
+    // NOMOR 4 - DROPDOWN DINAMIS
+
+    const provinsi = document.getElementById("provinsi");
+    const kota = document.getElementById("kota");
+    const kecamatan = document.getElementById("kecamatan");
+
+    for(let p in wilayah){
+        provinsi.innerHTML +=
+        `<option value="${p}">${p}</option>`;
+    }
+
+    provinsi.addEventListener("change", function(){
+
+        kota.innerHTML =
+        '<option value="">Pilih Kota</option>';
+
+        kecamatan.innerHTML =
+        '<option value="">Pilih Kecamatan</option>';
+
+        for(let k in wilayah[this.value]){
+            kota.innerHTML +=
+            `<option value="${k}">${k}</option>`;
+        }
+    });
+
+    kota.addEventListener("change", function(){
+
+        kecamatan.innerHTML =
+        '<option value="">Pilih Kecamatan</option>';
+
+        let dataKecamatan =
+        wilayah[provinsi.value][this.value];
+
+        for(let kec in dataKecamatan){
+            kecamatan.innerHTML +=
+            `<option value="${kec}">
+                ${kec}
+            </option>`;
+        }
+    });
+
+</script>
+
+</body>
+</html>
